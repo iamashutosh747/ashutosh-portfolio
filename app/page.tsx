@@ -12,6 +12,12 @@ export default async function Home() {
     .eq('published', true)
     .order('display_order', { ascending: true })
 
+  const { data: projects } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('published', true)
+    .order('display_order', { ascending: true })
+
   return (
     <main className="max-w-2xl mx-auto px-6 py-24">
       {/* Hero */}
@@ -55,10 +61,31 @@ export default async function Home() {
 
       <div className="my-16 h-px" style={{ backgroundColor: 'var(--color-line)' }} />
 
-      {/* Projects placeholder */}
+      {/* Projects */}
       <section>
-        <h2 className="font-display text-2xl mb-2">Projects</h2>
-        <p className="opacity-70 text-sm">Coming soon — work and initiatives, with case studies.</p>
+        <h2 className="font-display text-2xl mb-8">Projects</h2>
+        <div className="space-y-8">
+          {projects?.map((proj) => (
+            <div key={proj.id}>
+              <div className="flex items-center gap-3 mb-1">
+                <h3 className="font-medium text-base">{proj.name}</h3>
+                <span
+                  className="text-xs px-2 py-0.5 rounded-full"
+                  style={{
+                    backgroundColor: 'var(--color-line)',
+                    color: 'var(--color-accent)',
+                  }}
+                >
+                  {proj.status}
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed opacity-80">{proj.short_description}</p>
+              {proj.technologies && (
+                <p className="text-xs mt-2 opacity-50">{proj.technologies}</p>
+              )}
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   )
