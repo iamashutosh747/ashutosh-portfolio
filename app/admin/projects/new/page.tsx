@@ -24,32 +24,61 @@ export default function NewProject() {
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   function update(field: string, value: string | boolean | number) {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setSaving(true)
-    setError('')
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault()
+  setSaving(true)
+  setError('')
 
-    const supabase = createClient()
-    const { error } = await supabase.from('projects').insert({
-      ...form,
-      completion_date: form.completion_date || null,
-    })
+  const supabase = createClient()
+  let cover_image_url = ''
 
-    setSaving(false)
+  if (imageFile) {
+    setUploading(true)
+    const fileExt = imageFile.name.split('.').pop()
+    const fileName = `${Date.now()}.${fileExt}`
 
-    if (error) {
-      setError(error.message)
+    const { error: uploadError } = await supabase.storage
+      .from('project-images')
+      .upload(fileName, imageFile)
+
+    setUploading(false)
+
+    if (uploadError) {
+      setError(uploadError.message)
+      setSaving(false)
       return
     }
 
-    router.push('/admin')
-    router.refresh()
+    const { data: urlData } = supabase.storage
+      .from('project-images')
+      .getPublicUrl(fileName)
+
+    cover_image_url = urlData.publicUrl
   }
+
+  const { error } = await supabase.from('projects').insert({
+    ...form,
+    completion_date: form.completion_date || null,
+    cover_image_url,
+  })
+
+  setSaving(false)
+
+  if (error) {
+    setError(error.message)
+    return
+  }
+
+  router.push('/admin')
+  router.refresh()
+}
 
   return (
     <main className="max-w-xl mx-auto px-6 py-16">
@@ -150,7 +179,15 @@ export default function NewProject() {
           className="w-full px-3 py-2 rounded border text-sm"
           style={{ borderColor: 'var(--color-line)' }}
         />
-
+<div>
+  <label className="text-xs opacity-60 block mb-1">Cover image</label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+    className="w-full text-sm"
+  />
+</div>
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
@@ -177,7 +214,7 @@ export default function NewProject() {
           className="w-full py-2 rounded text-sm text-white disabled:opacity-50"
           style={{ backgroundColor: 'var(--color-accent)' }}
         >
-          {saving ? 'Saving...' : 'Save project'}
+          {uploading ? 'Uploading image...' : saving ? 'Saving...' : 'Save project'}
         </button>
       </form>
     </main>

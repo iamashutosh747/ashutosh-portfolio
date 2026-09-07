@@ -67,7 +67,15 @@ export default async function Home() {
         <div className="space-y-8">
           {projects?.map((proj) => (
             <div key={proj.id}>
-              <div className="flex items-center gap-3 mb-1">
+  {proj.cover_image_url && (
+    <img
+      src={proj.cover_image_url}
+      alt={proj.name}
+      className="w-full rounded mb-3 object-cover"
+      style={{ maxHeight: '240px' }}
+    />
+  )}
+  <div className="flex items-center gap-3 mb-1">
                 <h3 className="font-medium text-base">{proj.name}</h3>
                 <span
                   className="text-xs px-2 py-0.5 rounded-full"
