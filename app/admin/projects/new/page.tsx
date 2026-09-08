@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
 
@@ -16,69 +16,98 @@ export default function NewProject() {
     start_date: '',
     completion_date: '',
     role: '',
-    technologies: '',
     link_url: '',
     display_order: 1,
     featured: false,
     published: true,
   })
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const [technologies, setTechnologies] = useState<{ id: number; name: string }[]>([])
+  const [selectedTechIds, setSelectedTechIds] = useState<number[]>([])
+
+  useEffect(() => {
+    async function loadTechnologies() {
+      const supabase = createClient()
+      const { data } = await supabase.from('technologies').select('id, name').order('name')
+      setTechnologies(data || [])
+    }
+    loadTechnologies()
+  }, [])
+
+  function toggleTech(id: number) {
+    setSelectedTechIds((prev) =>
+      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+    )
+  }
 
   function update(field: string, value: string | boolean | number) {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
-async function handleSubmit(e: React.FormEvent) {
-  e.preventDefault()
-  setSaving(true)
-  setError('')
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setSaving(true)
+    setError('')
 
-  const supabase = createClient()
-  let cover_image_url = ''
+    const supabase = createClient()
+    let cover_image_url = ''
 
-  if (imageFile) {
-    setUploading(true)
-    const fileExt = imageFile.name.split('.').pop()
-    const fileName = `${Date.now()}.${fileExt}`
+    if (imageFile) {
+      setUploading(true)
+      const fileExt = imageFile.name.split('.').pop()
+      const fileName = `${Date.now()}.${fileExt}`
 
-    const { error: uploadError } = await supabase.storage
-      .from('project-images')
-      .upload(fileName, imageFile)
+      const { error: uploadError } = await supabase.storage
+        .from('project-images')
+        .upload(fileName, imageFile)
 
-    setUploading(false)
+      setUploading(false)
 
-    if (uploadError) {
-      setError(uploadError.message)
+      if (uploadError) {
+        setError(uploadError.message)
+        setSaving(false)
+        return
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('project-images')
+        .getPublicUrl(fileName)
+
+      cover_image_url = urlData.publicUrl
+    }
+
+    const { data: newProject, error } = await supabase
+      .from('projects')
+      .insert({
+        ...form,
+        completion_date: form.completion_date || null,
+        cover_image_url,
+      })
+      .select()
+      .single()
+
+    if (error) {
+      setError(error.message)
       setSaving(false)
       return
     }
 
-    const { data: urlData } = supabase.storage
-      .from('project-images')
-      .getPublicUrl(fileName)
+    if (newProject && selectedTechIds.length > 0) {
+      const links = selectedTechIds.map((technology_id) => ({
+        project_id: newProject.id,
+        technology_id,
+      }))
+      await supabase.from('project_technologies').insert(links)
+    }
 
-    cover_image_url = urlData.publicUrl
+    setSaving(false)
+    router.push('/admin')
+    router.refresh()
   }
-
-  const { error } = await supabase.from('projects').insert({
-    ...form,
-    completion_date: form.completion_date || null,
-    cover_image_url,
-  })
-
-  setSaving(false)
-
-  if (error) {
-    setError(error.message)
-    return
-  }
-
-  router.push('/admin')
-  router.refresh()
-}
 
   return (
     <main className="max-w-xl mx-auto px-6 py-16">
@@ -155,13 +184,38 @@ async function handleSubmit(e: React.FormEvent) {
           style={{ borderColor: 'var(--color-line)' }}
         />
 
-        <input
-          placeholder="Technologies (comma-separated)"
-          value={form.technologies}
-          onChange={(e) => update('technologies', e.target.value)}
-          className="w-full px-3 py-2 rounded border text-sm"
-          style={{ borderColor: 'var(--color-line)' }}
-        />
+        <div>
+          <label className="text-xs opacity-60 block mb-2">Technologies</label>
+          <div className="flex flex-wrap gap-2">
+            {technologies.map((tech) => (
+              <label
+                key={tech.id}
+                className="flex items-center gap-1.5 text-sm px-3 py-1 rounded-full border cursor-pointer"
+                style={{
+                  borderColor: selectedTechIds.includes(tech.id) ? 'var(--color-accent)' : 'var(--color-line)',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedTechIds.includes(tech.id)}
+                  onChange={() => toggleTech(tech.id)}
+                  className="hidden"
+                />
+                {tech.name}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="text-xs opacity-60 block mb-1">Cover image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+            className="w-full text-sm"
+          />
+        </div>
 
         <input
           placeholder="Link URL (optional)"
@@ -179,15 +233,7 @@ async function handleSubmit(e: React.FormEvent) {
           className="w-full px-3 py-2 rounded border text-sm"
           style={{ borderColor: 'var(--color-line)' }}
         />
-<div>
-  <label className="text-xs opacity-60 block mb-1">Cover image</label>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-    className="w-full text-sm"
-  />
-</div>
+
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
