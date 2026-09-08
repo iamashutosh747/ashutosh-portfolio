@@ -4,7 +4,7 @@ export default function AdminDashboard() {
   return (
     <main className="max-w-2xl mx-auto px-6 py-24">
       <h1 className="font-display text-3xl mb-8">Dashboard</h1>
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <Link
           href="/admin/experience/new"
           className="inline-block px-4 py-2 rounded text-sm text-white"
@@ -18,6 +18,13 @@ export default function AdminDashboard() {
           style={{ backgroundColor: 'var(--color-accent)' }}
         >
           + Add Project
+        </Link>
+        <Link
+          href="/admin/skills/new"
+          className="inline-block px-4 py-2 rounded text-sm text-white"
+          style={{ backgroundColor: 'var(--color-accent)' }}
+        >
+          + Add Skill
         </Link>
       </div>
     </main>
