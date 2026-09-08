@@ -18,6 +18,12 @@ export default async function Home() {
     .eq('published', true)
     .order('display_order', { ascending: true })
 
+  const { data: skills } = await supabase
+    .from('skills')
+    .select('*')
+    .eq('published', true)
+    .order('display_order', { ascending: true })
+
   return (
     <main className="max-w-2xl mx-auto px-6 py-24">
       {/* Hero */}
@@ -67,15 +73,15 @@ export default async function Home() {
         <div className="space-y-8">
           {projects?.map((proj) => (
             <div key={proj.id}>
-  {proj.cover_image_url && (
-    <img
-      src={proj.cover_image_url}
-      alt={proj.name}
-      className="w-full rounded mb-3 object-cover"
-      style={{ maxHeight: '240px' }}
-    />
-  )}
-  <div className="flex items-center gap-3 mb-1">
+              {proj.cover_image_url && (
+                <img
+                  src={proj.cover_image_url}
+                  alt={proj.name}
+                  className="w-full rounded mb-3 object-cover"
+                  style={{ maxHeight: '240px' }}
+                />
+              )}
+              <div className="flex items-center gap-3 mb-1">
                 <h3 className="font-medium text-base">{proj.name}</h3>
                 <span
                   className="text-xs px-2 py-0.5 rounded-full"
@@ -92,6 +98,24 @@ export default async function Home() {
                 <p className="text-xs mt-2 opacity-50">{proj.technologies}</p>
               )}
             </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="my-16 h-px" style={{ backgroundColor: 'var(--color-line)' }} />
+
+      {/* Skills */}
+      <section>
+        <h2 className="font-display text-2xl mb-6">Skills</h2>
+        <div className="flex flex-wrap gap-2">
+          {skills?.map((skill) => (
+            <span
+              key={skill.id}
+              className="text-sm px-3 py-1 rounded-full border"
+              style={{ borderColor: 'var(--color-line)' }}
+            >
+              {skill.name}
+            </span>
           ))}
         </div>
       </section>
