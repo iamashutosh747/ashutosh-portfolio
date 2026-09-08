@@ -14,7 +14,12 @@ export default async function Home() {
 
   const { data: projects } = await supabase
     .from('projects')
-    .select('*')
+    .select(`
+      *,
+      project_technologies (
+        technologies ( name )
+      )
+    `)
     .eq('published', true)
     .order('display_order', { ascending: true })
 
@@ -94,8 +99,10 @@ export default async function Home() {
                 </span>
               </div>
               <p className="text-sm leading-relaxed opacity-80">{proj.short_description}</p>
-              {proj.technologies && (
-                <p className="text-xs mt-2 opacity-50">{proj.technologies}</p>
+              {proj.project_technologies?.length > 0 && (
+                <p className="text-xs mt-2 opacity-50">
+                  {proj.project_technologies.map((pt: any) => pt.technologies.name).join(', ')}
+                </p>
               )}
             </div>
           ))}
