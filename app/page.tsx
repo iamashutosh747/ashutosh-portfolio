@@ -126,6 +126,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
       <div className="my-16 h-px" style={{ backgroundColor: 'var(--color-line)' }} />
 
       {/* Footer */}
@@ -138,7 +139,7 @@ export default async function Home() {
             </a>
           )}
           {settings?.linkedin_url && (
-            
+            <a
               href={settings.linkedin_url}
               target="_blank"
               rel="noopener noreferrer"
@@ -148,7 +149,7 @@ export default async function Home() {
             </a>
           )}
           {settings?.github_url && (
-            
+            <a
               href={settings.github_url}
               target="_blank"
               rel="noopener noreferrer"
