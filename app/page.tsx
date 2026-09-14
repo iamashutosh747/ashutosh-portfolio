@@ -126,6 +126,39 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      <div className="my-16 h-px" style={{ backgroundColor: 'var(--color-line)' }} />
+
+      {/* Footer */}
+      <footer className="flex items-center justify-between text-sm">
+        <span className="opacity-60">{settings?.location}</span>
+        <div className="flex gap-5">
+          {settings?.email && (
+            <a href={`mailto:${settings.email}`} style={{ color: 'var(--color-accent)' }}>
+              Email
+            </a>
+          )}
+          {settings?.linkedin_url && (
+            
+              href={settings.linkedin_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--color-accent)' }}
+            >
+              LinkedIn
+            </a>
+          )}
+          {settings?.github_url && (
+            
+              href={settings.github_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--color-accent)' }}
+            >
+              GitHub
+            </a>
+          )}
+        </div>
+      </footer>
     </main>
   )
 }
