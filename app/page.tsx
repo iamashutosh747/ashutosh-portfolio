@@ -6,12 +6,6 @@ export default async function Home() {
     .select('*')
     .single()
 
-  const { data: experiences } = await supabase
-    .from('experiences')
-    .select('*')
-    .eq('published', true)
-    .order('display_order', { ascending: true })
-
   const { data: skills } = await supabase
     .from('skills')
     .select('*')
@@ -35,43 +29,31 @@ export default async function Home() {
 
       <div className="my-16 h-px" style={{ backgroundColor: 'var(--color-line)' }} />
 
-      {/* Experience */}
       <section>
-        <h2 className="font-display text-2xl mb-8">Experience</h2>
-        <div className="space-y-10">
-          {experiences?.map((exp) => (
-            <div key={exp.id} className="flex gap-6">
-              <div className="w-28 shrink-0 text-sm opacity-60 pt-1">
-                {new Date(exp.start_date).getFullYear()}
-                {' – '}
-                {exp.is_current ? 'Present' : new Date(exp.end_date).getFullYear()}
-              </div>
-              <div>
-                <h3 className="font-medium text-base">{exp.job_title}</h3>
-                <p className="text-sm opacity-70 mb-2">{exp.company}{exp.location ? ` · ${exp.location}` : ''}</p>
-                <p className="text-sm leading-relaxed opacity-80">{exp.description}</p>
-                {exp.technologies && (
-                  <p className="text-xs mt-2 opacity-50">{exp.technologies}</p>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="font-display text-2xl">Experience</h2>
+          <a href="/experience" className="text-sm" style={{ color: 'var(--color-accent)' }}>
+            View all →
+          </a>
         </div>
+        <p className="text-sm opacity-70">
+          Operations and finance roles spanning audit, exports, and reporting — full history on the Experience page.
+        </p>
       </section>
 
       <div className="my-16 h-px" style={{ backgroundColor: 'var(--color-line)' }} />
 
       <section>
-  <div className="flex items-center justify-between mb-2">
-    <h2 className="font-display text-2xl">Projects</h2>
-    <a href="/projects" className="text-sm" style={{ color: 'var(--color-accent)' }}>
-      View all →
-    </a>
-  </div>
-  <p className="text-sm opacity-70">
-    A collection of process, reporting, and finance-focused work — click through to see all of them.
-  </p>
-</section>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="font-display text-2xl">Projects</h2>
+          <a href="/projects" className="text-sm" style={{ color: 'var(--color-accent)' }}>
+            View all →
+          </a>
+        </div>
+        <p className="text-sm opacity-70">
+          A collection of process, reporting, and finance-focused work — click through to see all of them.
+        </p>
+      </section>
 
       {/* Skills */}
       <section>

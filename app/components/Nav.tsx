@@ -8,7 +8,9 @@ export default function Nav() {
       </Link>
       <div className="flex gap-6">
         <Link href="/" style={{ color: 'var(--color-accent)' }}>Home</Link>
+        <Link href="/experience" style={{ color: 'var(--color-accent)' }}>Experience</Link>
         <Link href="/projects" style={{ color: 'var(--color-accent)' }}>Projects</Link>
+        <a href="mailto:iamashutosh747@gmail.com" style={{ color: 'var(--color-accent)' }}>Contact</a>
       </div>
     </nav>
   )
