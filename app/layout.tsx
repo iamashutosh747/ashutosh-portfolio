@@ -28,9 +28,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fraunces.variable} ${publicSans.variable}`}>
-        <Nav />
-        {children}
-      </body>
+  <script
+    dangerouslySetInnerHTML={{
+      __html: `
+        (function() {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        })();
+      `,
+    }}
+  />
+  <Nav />
+  {children}
+</body>
     </html>
   );
 }

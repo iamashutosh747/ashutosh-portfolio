@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import ThemeToggle from './ThemeToggle'
 
 export default function Nav() {
   return (
@@ -14,6 +15,7 @@ export default function Nav() {
         <Link href="/achievements" style={{ color: 'var(--color-accent)' }}>Achievements</Link>
         <Link href="/certifications" style={{ color: 'var(--color-accent)' }}>Certifications</Link>
         <a href="mailto:your-email@ashutosh-sharma.com" style={{ color: 'var(--color-accent)' }}>Contact</a>
+        <ThemeToggle />
       </div>
     </nav>
   )
