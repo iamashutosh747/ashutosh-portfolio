@@ -12,6 +12,7 @@ export default function Nav() {
         <Link href="/projects" style={{ color: 'var(--color-accent)' }}>Projects</Link>
         <Link href="/education" style={{ color: 'var(--color-accent)' }}>Education</Link>
         <Link href="/achievements" style={{ color: 'var(--color-accent)' }}>Achievements</Link>
+        <Link href="/certifications" style={{ color: 'var(--color-accent)' }}>Certifications</Link>
         <a href="mailto:your-email@ashutosh-sharma.com" style={{ color: 'var(--color-accent)' }}>Contact</a>
       </div>
     </nav>
