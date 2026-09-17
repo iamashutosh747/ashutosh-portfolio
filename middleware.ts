@@ -2,6 +2,19 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname
+
+  // Site-wide username gate (skip for the unlock page and its API route)
+  if (!path.startsWith('/unlock') && !path.startsWith('/api/unlock')) {
+    const unlocked = request.cookies.get('site_unlocked')
+    if (!unlocked) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/unlock'
+      return NextResponse.redirect(url)
+    }
+  }
+
+  // Existing admin auth check
   let response = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -27,7 +40,7 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user && request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login') {
+  if (!user && path.startsWith('/admin') && path !== '/admin/login') {
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login'
     return NextResponse.redirect(url)
@@ -37,5 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
