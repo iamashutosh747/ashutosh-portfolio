@@ -16,8 +16,11 @@ const publicSans = Public_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ashutosh Sharma",
-  description: "Operations & FP&A",
+  title: {
+    default: "Ashutosh Sharma — Operations & FP&A",
+    template: "%s",
+  },
+  description: "Operations leader working toward FP&A — portfolio of experience, projects, and skills.",
 };
 
 export default function RootLayout({

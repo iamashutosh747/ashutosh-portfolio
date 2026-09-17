@@ -1,5 +1,10 @@
 import { supabase } from '@/lib/supabase'
 
+export const metadata = {
+  title: 'Achievements — Ashutosh Sharma',
+  description: 'Notable milestones and recognitions.',
+}
+
 export default async function AchievementsPage() {
   const { data: achievements } = await supabase
     .from('achievements')

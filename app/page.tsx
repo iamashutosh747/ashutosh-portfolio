@@ -1,5 +1,10 @@
 import { supabase } from '@/lib/supabase'
 
+export const metadata = {
+  title: 'Ashutosh Sharma — Operations & FP&A',
+  description: 'Operations leader with a track record in audit, exports, and financial reporting, currently building toward FP&A. Portfolio of experience, projects, and skills.',
+}
+
 export default async function Home() {
   const { data: settings } = await supabase
     .from('site_settings')
