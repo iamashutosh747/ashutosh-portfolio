@@ -14,6 +14,7 @@ export default function AdminDashboard() {
         <Link href="/admin/education/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Education</Link>
 <Link href="/admin/education" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Education</Link>
         <Link href="/admin/achievements/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Achievement</Link>
+<Link href="/admin/achievements" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Achievements</Link>
         <Link href="/admin/settings" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Site Settings</Link>
         <Link href="/admin/certifications/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Certification</Link>
       </div>
