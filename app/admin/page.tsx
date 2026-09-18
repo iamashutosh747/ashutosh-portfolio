@@ -6,10 +6,11 @@ export default function AdminDashboard() {
       <h1 className="font-display text-3xl mb-8">Dashboard</h1>
       <div className="flex flex-wrap gap-3">
         <Link href="/admin/experience/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Experience</Link>
-<Link href="/admin/experience" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Experience</Link>
+        <Link href="/admin/experience" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Experience</Link>
         <Link href="/admin/projects/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Project</Link>
-<Link href="/admin/projects" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Projects</Link>
+        <Link href="/admin/projects" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Projects</Link>
         <Link href="/admin/skills/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Skill</Link>
+<Link href="/admin/skills" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Skills</Link>
         <Link href="/admin/education/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Education</Link>
         <Link href="/admin/achievements/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Achievement</Link>
         <Link href="/admin/settings" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Site Settings</Link>
