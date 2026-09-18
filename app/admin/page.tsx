@@ -7,6 +7,7 @@ export default function AdminDashboard() {
       <div className="flex flex-wrap gap-3">
         <Link href="/admin/experience/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Experience</Link>
         <Link href="/admin/projects/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Project</Link>
+<Link href="/admin/projects" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>Manage Projects</Link>
         <Link href="/admin/skills/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Skill</Link>
         <Link href="/admin/education/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Education</Link>
         <Link href="/admin/achievements/new" className="inline-block px-4 py-2 rounded text-sm text-white" style={{ backgroundColor: 'var(--color-accent)' }}>+ Add Achievement</Link>
